@@ -1,12 +1,12 @@
 import heapq
 
-def tokenize(text):
-    tokens = text
+def tokenize(text, merges):
+    tokens = list(text)
     mapping = {}
 
 
     #run byte pair encoding for until only 10,000 tokens remain
-    while len(tokens) > 10000:
+    for x in range(merges):
 
         max_token_count = 0
         max_token = tokens[0]
@@ -27,7 +27,12 @@ def tokenize(text):
         for i, token in enumerate(tokens):
             if not(i >= (len(tokens) - 1)):
                 if tokens[i] + tokens[i+1] == max_token:
-                    tokens = tokens[:i] + tokens[i+1:]
+                    tokens[i] = max_token
+                    if i == (len(tokens) - 2):
+                        tokens = tokens[:i + 1]
+                    else:
+                        tokens = tokens[:i+1] + tokens[i+2:]
+
 
 
     return tokens
